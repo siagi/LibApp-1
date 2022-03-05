@@ -1,8 +1,9 @@
+@using Microsoft.AspNetCore.Identity
 @{
     ViewBag.Title = "Customers";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@inject UserManager<IdentityUser> UserManager;
 <h2>Customers</h2>
 
 <p>
@@ -43,11 +44,19 @@
                     {
                         data: "membershipType.name"
                     },
+                    @if(User.IsInRole("Administrator"))
+                    {
+                        <text>
+
                     {
                         data: "id",
                         render: function (data) {
+
                             return "<button class='btn btn-secondary js-delete' data-customer-id=" + data + ">Delete</button>";
+
                         }
+                    }
+                        </text> 
                     }
                 ]
             });
