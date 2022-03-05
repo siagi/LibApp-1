@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using LibApp.Data;
 using LibApp.Dtos;
+using LibApp.Interfaces;
 using LibApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace LibApp.Controllers.Api
@@ -15,25 +17,44 @@ namespace LibApp.Controllers.Api
     [ApiController]
     public class BooksController : ControllerBase
     {
-        public BooksController(ApplicationDbContext context, IMapper mapper)
+        private readonly IBookRepository _bookRepository;
+        private readonly IMapper _mapper;
+        public BooksController(IBookRepository booksRepository, IMapper mapper)
         {
-            _context = context;
+            _bookRepository = booksRepository;
             _mapper = mapper;
         }
 
-        public IEnumerable<BookDto> GetBooks(string query = null)
+        [HttpGet]
+        public ActionResult<IEnumerable<Book>> GetAllBooks()
         {
-            var booksQuery = _context.Books.Where(b => b.NumberAvailable > 0);
-
-            if (!String.IsNullOrWhiteSpace(query))
+            var books = _bookRepository.GetBooks();
+            return Ok(_mapper.Map<IEnumerable<BookDto>>(books));
+        }
+        [HttpGet("{id}", Name ="GetBookById")]
+        public ActionResult<Book> GetBookById(int id)
+        {
+            var book = _bookRepository.GetBookById(id);
+            if(book == null)
             {
-                booksQuery = booksQuery.Where(b => b.Name.Contains(query));
+                return NotFound();
             }
-
-            return booksQuery.ToList().Select(_mapper.Map<Book, BookDto>);
+            return Ok(_mapper.Map<BookDto>(book));
+        }
+        [HttpDelete("{id}")]
+        public ActionResult<Book> DeleteBook(int id)
+        {
+            try
+            {
+                _bookRepository.DeleteBook(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new BadHttpRequestException(e.Message, (int)HttpStatusCode.BadRequest);
+            }
         }
 
-        private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
     }
 }
