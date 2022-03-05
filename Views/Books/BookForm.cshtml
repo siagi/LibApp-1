@@ -8,6 +8,7 @@
 <h2>@Model.Title</h2>
 @using (Html.BeginForm("Save", "Books"))
 {
+    @Html.AntiForgeryToken()
     <div class="form-group">
         @Html.LabelFor(m => m.Book.Name)
         @Html.TextBoxFor(m => m.Book.Name, new { @class = "form-control" })
@@ -31,6 +32,7 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Book.NumberInStock)
         @Html.TextBoxFor(m => m.Book.NumberInStock, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m=>m.Book.NumberInStock)
     </div>
 
 
