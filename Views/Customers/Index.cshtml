@@ -37,7 +37,7 @@
                     {
                         data: "name",
                         render: function (data, type, customer) {
-                            return "<a href='customers/edit/" + customer + "'>" + customer.name + "</a>";
+                            return "<a href='customers/details/" + customer.id + "'>" + customer.name + "</a>";
                         }
                     },
                     {
@@ -80,6 +80,11 @@
                                 method: "DELETE",
                                 success: function () {
                                     table.row(button.parents("tr")).remove().draw();
+                                },
+                                error:function(req,status,err){
+                                    bootbox.alert({
+                                        message:'Access Denied',
+                                    })
                                 }
                             });
                         }

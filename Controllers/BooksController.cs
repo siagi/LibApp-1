@@ -13,8 +13,8 @@ namespace LibApp.Controllers
 {
     public class BooksController : Controller
     {
-        private IBookRepository _bookRepository;
-        private IGenreRepository _genreRepository;
+        private readonly IBookRepository _bookRepository;
+        private readonly IGenreRepository _genreRepository;
 
         public BooksController(IBookRepository bookRepository, IGenreRepository genreRepository)
         {

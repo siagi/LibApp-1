@@ -13,8 +13,8 @@ namespace LibApp.Controllers
 {
     public class CustomersController : Controller
     {
-        private ICustomerRepository _customers;
-        private IMembershipTypesRepository _membershipTypes;
+        private readonly ICustomerRepository _customers;
+        private readonly IMembershipTypesRepository _membershipTypes;
 
         public CustomersController(ICustomerRepository customers,IMembershipTypesRepository membershipTypes)
         {
