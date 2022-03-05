@@ -1,7 +1,9 @@
 ﻿using LibApp.Data;
 using LibApp.Interfaces;
 using LibApp.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LibApp.Repositories
 {
@@ -30,16 +32,16 @@ namespace LibApp.Repositories
 
         public IEnumerable<Book> GetBooks()
         {
-            return _context.Books;
+            return _context.Books.Include(b => b.Genre);
         }
 
         public void UpdateBook(Book book)
         {
             throw new System.NotImplementedException();
         }
-        public void Save()
+        public int Save()
         {
-            _context.SaveChanges();
+            return _context.SaveChanges();
         }
     }
 }

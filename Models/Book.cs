@@ -23,7 +23,13 @@ namespace LibApp.Models
 		[Display(Name="Release Date")]
 		[Required(ErrorMessage ="Release date is missing.")]
 		public DateTime ReleaseDate { get; set; }
-		[Display(Name="Number in Stock")]
+
+        internal object Include(Func<object, object> p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [Display(Name="Number in Stock")]
 		[Required(ErrorMessage = "Information about quantity in stock is missing.")]
 		[Range(1,20,ErrorMessage ="Number must be between 1 and 20")]
 		public int NumberInStock { get; set; }
