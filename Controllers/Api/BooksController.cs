@@ -3,6 +3,7 @@ using LibApp.Data;
 using LibApp.Dtos;
 using LibApp.Interfaces;
 using LibApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,12 +27,14 @@ namespace LibApp.Controllers.Api
         }
 
         [HttpGet]
+        [Authorize(Roles = "Owner, StoreManager, User")]
         public ActionResult<IEnumerable<Book>> GetAllBooks()
         {
             var books = _bookRepository.GetBooks();
             return Ok(_mapper.Map<IEnumerable<BookDto>>(books));
         }
         [HttpGet("{id}", Name ="GetBookById")]
+        [Authorize(Roles = "Owner, StoreManager, User")]
         public ActionResult<Book> GetBookById(int id)
         {
             var book = _bookRepository.GetBookById(id);
@@ -42,6 +45,7 @@ namespace LibApp.Controllers.Api
             return Ok(_mapper.Map<BookDto>(book));
         }
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Owner")]
         public ActionResult<Book> DeleteBook(int id)
         {
             try
