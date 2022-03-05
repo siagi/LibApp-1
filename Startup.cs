@@ -96,29 +96,6 @@ namespace LibApp
                 }
             }
 
-           
-            foreach (var userRole in roleNames)
-            {
-                var user = new IdentityUser();
-                user.Email = userRole + "@mail.com";
-                user.UserName = userRole + "@mail.com";
-                user.EmailConfirmed = true;
-
-                string userPWD = "Password@1234";
-
-                var _user = await UserManager.FindByEmailAsync(userRole + "@mail.com");
-
-                if (_user == null)
-                {
-                    var createPowerUser = await UserManager.CreateAsync(user, userPWD);
-                    if (createPowerUser.Succeeded)
-                        await UserManager.AddToRoleAsync(user, userRole);
-
-                }
-            }
-
-
-
         }
 
     }
